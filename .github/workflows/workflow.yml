@@ -20,10 +20,10 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint code
-        run: npx eslint .
+        run: npm run lint
 
       - name: Run unit tests
         run: npm test
