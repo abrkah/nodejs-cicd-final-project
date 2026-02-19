@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: lint-task
+spec:
+  steps:
+    - name: eslint
+      image: node:18
+      workingDir: /workspace/source
+      script: |
+        #!/bin/sh
+        npm install
+        npx eslint .
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: test-task
+spec:
+  steps:
+    - name: jest
+      image: node:18
+      workingDir: /workspace/source
+      script: |
+        #!/bin/sh
+        npm install
+        npm test
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup-task
+spec:
+  steps:
+    - name: cleanup
+      image: ubuntu
+      script: |
+        #!/bin/sh
+        echo "Cleaning up workspace..."
+        rm -rf /workspace/source/node_modules
